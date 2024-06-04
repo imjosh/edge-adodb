@@ -1,6 +1,6 @@
 {
   "name": "edge-adodb",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "index.js",
   "license": "MIT",
   "author": {
@@ -12,6 +12,6 @@
     "url": "git://github.com/Comprime/edge-adodb.git"
   },
   "dependencies": {
-    "edge": "^7.10.1"
+    "edge-js": "^22.1.1"
   }
 }

@@ -16,14 +16,6 @@ namespace edge_adodb
                 Query = (Func<object,Task<object>>)this.QueryAsync,
                 Execute = (Func<object,Task<object>>)this.ExecuteAsync
             };
-            /*
-            string connStr = (string)input;
-            Connection cn = new Connection();
-            Recordset rs = new Recordset();
-            cn.Open(connStr, null, null, 0);
-            cn.Close();
-            return input;
-            */
         }
         public async Task<object> QueryAsync(object _t){
             IDictionary<string,object> arg = _t as IDictionary<string,object>;
@@ -38,6 +30,10 @@ namespace edge_adodb
             var ret = new List<IDictionary<string, object>>();
             cn.Open(conn, null, null, -1);
             rs.Open(query, cn, ADODB.CursorTypeEnum.adOpenKeyset);
+            if (rs.EOF && rs.BOF)
+            {
+                return ret;
+            }
             rs.MoveFirst();
             while(!rs.EOF){
                 var o = new Dictionary<string, object>();
@@ -63,12 +59,10 @@ namespace edge_adodb
             cn.Open(conn, null, null, -1);
             object affected = Type.Missing;
             var rs = cn.Execute(query, out affected, -1);
-            rs.MoveFirst();
             var o = new Dictionary<string, object>();
             foreach(Field entry in rs.Fields){
                 o[entry.Name] = entry.Value;
             }
-            rs.Close();
             cn.Close();
             return new {
                 affected = affected,
